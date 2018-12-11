@@ -17,19 +17,24 @@ class DrawsService {
             });
     }
 
-    public update(draw, drawId): Promise<any> {
+    public update(draw, drawId, uid): Promise<any> {
+        draw.modifiedBy = uid;
+        draw.modifiedAt = new Date().getTime();
+
         return admin.firestore()
             .collection('draws')
             .doc(drawId)
             .set(draw);
     }
 
-    public close(draw, drawId): Promise<any> {
+    public close(draw, drawId, uid): Promise<any> {
+        draw.closedBy = uid;
+        draw.closedAt = new Date().getTime();
         draw.status = 'CLOSED';
-        return this.update(draw, drawId);
+        return this.update(draw, drawId, uid);
     }
 
-    public async findAndShuffleAllParticipantsForTwitterDraw(drawId): Promise<any> {
+    public async findAndShuffleAllParticipantsForTwitterDraw(drawId, uid): Promise<any> {
         const draw = await this.findOne(drawId);
         const tweeters = await tweetsService.findAllRetweets(draw.tweetId);
 
@@ -42,7 +47,7 @@ class DrawsService {
         this.shuffleParticipants(participants);
 
         draw.participants = participants;
-        return this.close(draw, drawId);
+        return this.close(draw, drawId, uid);
     }
 
     private shuffleParticipants(participants, turn = 3) {

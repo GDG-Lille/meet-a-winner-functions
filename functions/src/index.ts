@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
 admin.initializeApp();
+admin.firestore().settings({ timestampsInSnapshots: true });
 
 import findAllTweetsByQuery from './twitter/functions/find-all-tweets-by-query';
 import findAndShuffleAllParticipantsForTwitterDraw from './draws/functions/find-and-shuffle-all-participants-twitter-draw';

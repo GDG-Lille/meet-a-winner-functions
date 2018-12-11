@@ -24,7 +24,7 @@ class TweetsService {
             .then(response => response.data.statuses);
     }
 
-    public async findAllRetweets(tweetId): Promise<any> {
+    public async findAllRetweets(tweetId): Promise<Array<any>> {
         const bearerToken = await authentificationService.getBearerToken();
 
         return this.httpClient
@@ -34,7 +34,7 @@ class TweetsService {
                         'Authorization': `Bearer ${bearerToken.access_token}`
                     }
                 })
-            .then(response => response.data.statuses);
+            .then(response => response.data);
     }
 
 }

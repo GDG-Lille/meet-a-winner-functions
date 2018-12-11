@@ -13,9 +13,5 @@ export default (data, context) => {
             'invalid-argument', 'You must provide a valid draw ID.');
     }
 
-    return drawsService
-        .findAndShuffleAllParticipantsForTwitterDraw(data.params.drawId)
-        .then(participants => {
-            return { participants : participants};
-        });
+    return drawsService.findAndShuffleAllParticipantsForTwitterDraw(data.params.drawId, context.auth.uid);
 };
